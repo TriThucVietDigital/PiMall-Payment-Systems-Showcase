@@ -1,5 +1,4 @@
-# PiMall-Payment-Systems-Showcase
-# PiMall - Global E-commerce & Internal Credit Ecosystem
+# PiMall - Global E-commerce & Internal Credit Ecosystem ( Review ) 
 
 **PiMall** is an **e-commerce marketplace combined with an internal credit system and Real World Asset (RWA) collateralization**, built for the Pi Network community and beyond.
 
