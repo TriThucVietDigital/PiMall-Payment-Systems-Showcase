@@ -1,34 +1,52 @@
 # PiMall-Payment-Systems-Showcase
-Core architecture and ledger logic for PiMall Global Ecosystem.
-# PiMall Global: Next-Gen Payment & Internal Credit Ecosystem
+# PiMall - Global E-commerce & Internal Credit Ecosystem
 
-This repository serves as a **Technical Showcase** for the core architecture of the PiMall Global ecosystem. It highlights the design of a resilient, high-speed, and secure financial infrastructure tailored for digital asset management.
+**PiMall** is an **e-commerce marketplace combined with an internal credit system and Real World Asset (RWA) collateralization**, built for the Pi Network community and beyond.
 
-## 🏗️ Core Architecture: 3-Layer Decoupled Ledger
-The system is built on a custom **3-Layer Ledger** architecture to balance high-speed user experience with strict financial finality:
+### Project Overview
+PiMall is a complete ecosystem that integrates:
+- **E-commerce Marketplace** for buying and selling physical goods
+- **Internal Credit Token - GEM** (pegged at 1 GEM = 1,000 VND)
+- **Real World Asset (RWA) Backing** – Agricultural products and physical commodities (rice, grapefruit, steel, etc.) used as collateral
+- **Escrow & Transaction Guarantee** mechanism for both buyers and sellers
+- **Hybrid Payment System** supporting internal credit and blockchain settlement
 
-1.  **Application Ledger (Layer 1):** Focuses on low-latency feedback (~20ms) and instant user-facing balance updates.
-2.  **Clearing Ledger (Layer 2):** Handles batch processing, risk assessment, and fraud detection within a 10-second window.
-3.  **Settlement Ledger (Layer 3):** Ensures absolute immutability and compliance (ISO 20022 alignment) with 60-second block finality.
+### Key Highlights
 
-## 📂 Technical Documentation
-For an in-depth technical audit, please review the following modules:
+- **3-Layer Decoupled Ledger Architecture**: Transaction – Validation – Archive, ensuring data integrity and preventing post-transaction modifications.
+- **GEM Stablecoin**: Total supply of 100 billion units, minted from VND, Pi Network, and real-world assets.
+- **ISO 20022 Compliance**: Achieved **70-80% compliance** with the international financial messaging standard.
+- **High Performance**: Average transaction confirmation time of **20-30 milliseconds** and throughput of **30-50 transactions per second**.
+- **Multi-layer Security**: Row-Level Security (RLS) on PostgreSQL, AES-256 encryption, Zero-Knowledge principles, and Cloudflare WAF protection.
+- **Blockchain Integration**: Designed to support **Pi Network** for community utility and **XRP** for fast, low-cost cross-border settlement and liquidity bridging in the future.
 
-* **[01_ARCHITECTURE_3_LAYER_LEDGER.md](./01_ARCHITECTURE_3_LAYER_LEDGER.md)**: Deep dive into the transaction lifecycle, decoupled storage, and system synchronization logic.
-* **[02_DATABASE_SCHEMA.md](./02_DATABASE_SCHEMA.md)**: PostgreSQL implementation including Row-Level Security (RLS) for data isolation and indexing strategies for high-concurrency.
-* **[03_STABLECOIN_GEM_LOGIC.md](./03_STABLECOIN_GEM_LOGIC.md)**: Mechanism for GEM (Internal Credit) operations, asset-pegging (70-100% backing), and mint/burn protocols.
+### Long-term Vision
+PiMall aims to build a decentralized commerce ecosystem that bridges traditional fiat-like experience with real-world assets (RWA) and blockchain technology. By combining e-commerce, internal stable credit (GEM), agricultural collateralization, and integration with both **Pi Network** and **XRP**, the platform creates sustainable utility and economic value for users while preparing for broader blockchain adoption.
 
-## 🛡️ Security & Performance Highlights
-- **Performance:** Achieved theoretical latency of 20-30ms through Redis caching and optimized worker queues.
-- **Data Integrity:** Implemented SHA-256 hash chaining at the settlement layer for immutable audit trails.
-- **Infrastructure:** Secured via Cloudflare WAF, DDoS protection, and Worker-level edge computing.
-- **Risk Management:** 10-Master-Wallet network for liquidity coordination and real-time swap logic.
+### Repository Structure
 
-## ✉️ Contact for Audit
-The source code for specific backend modules is restricted to protect Intellectual Property. For a live technical demonstration or access to private repositories, please reach out:
+| File                                      | Description |
+|-------------------------------------------|-------------|
+| `3-LAYER-LEDGER-GUIDE.md`                | Detailed explanation of the 3-layer ledger architecture |
+| `GEM_LOGIC_EXPLANATION.md`               | GEM stablecoin logic and minting mechanism |
+| `ISO-20022-COMPLIANCE.md`                | ISO 20022 compliance details |
+| `ESCROW-AND-COLLATERAL.md`               | Escrow and RWA collateral mechanism |
+| `DATABASE_SCHEMA.md`                     | Database schema and Row-Level Security |
+| `PERFORMANCE-METRICS.md`                 | Performance metrics (latency & TPS) |
+| `SECURITY_OVERVIEW.md`                   | Security architecture overview |
+| `BLOCKCHAIN-INTEGRATION.md`              | Pi Network and XRP integration plan |
 
-* **Email:** khanhle.fintech@gmail.com
-* **Location:** Ho Chi Minh City, Vietnam
+### Review Guide
+1. Start with this **README.md**
+2. Read `3-LAYER-LEDGER-GUIDE.md` and `GEM_LOGIC_EXPLANATION.md`
+3. Continue with `ISO-20022-COMPLIANCE.md`, `ESCROW-AND-COLLATERAL.md`, and `BLOCKCHAIN-INTEGRATION.md`
 
----
-*Developed with a focus on stability, scalability, and the future of Blockchain-based payments.*
+**Note**: This repository contains **only technical documentation and system descriptions**. It does **not** include production source code.
+
+For any questions or additional information, please feel free to contact:
+
+**Le Tuan Khanh**  
+Email: khanhle.fintech@gmail.com  
+Phone: (+84) 973 791 853
+
+Thank you for your time and consideration!
