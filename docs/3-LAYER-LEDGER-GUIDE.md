@@ -1,4 +1,4 @@
-# HỆ THỐNG SỔ CÁI 3 LỚP (3-LAYER LEDGER) - 314MALL
+# HỆ THỐNG SỔ CÁI 3 LỚP (3-LAYER LEDGER) - PIMALL
 ## Hướng dẫn Áp dụng Thực tế
 
 ---
