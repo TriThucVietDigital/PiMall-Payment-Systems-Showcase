@@ -151,32 +151,6 @@ Validate financial completeness, detect fraud, and prepare transactions for perm
 TOTAL: ~15ms for 100 txns (0.15ms per txn)
 ```
 
-### Fraud Detection Model
-
-```python
-# ML-based risk scoring (simplified)
-import numpy as np
-from sklearn.ensemble import RandomForestClassifier
-
-def calculate_risk_score(txn, user_history):
-    features = [
-        txn.amount / user_history.avg_txn_size,     # Velocity
-        user_history.txns_today,                     # Frequency
-        geolocation_distance(user.lastLoc, txn.loc), # Distance
-        int(txn.time in [2,3,4]),                    # Off-hours?
-        txn.is_new_merchant,                         # First time?
-    ]
-    
-    risk_score = model.predict_proba([features])[0][1]  # Probability of fraud
-    return risk_score
-
-# Thresholds:
-# risk_score < 0.3  → Auto-approve
-# 0.3-0.7          → Require 2FA challenge
-# > 0.7            → Auto-reject
-```
-
----
 
 ## V. LAYER 3: STORAGE LAYER (Immutable & Encrypted)
 
