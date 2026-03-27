@@ -168,83 +168,8 @@ Permanently record validated transactions with **cryptographic integrity** and *
 | **Retention** | 99 years | Cold storage after 7 years |
 | **RPO/RTO** | <1 hour / <5 min | WAL archiving + PITR |
 
-### Data Model
-
-```sql
--- LAYER 3: Storage Ledger (Immutable)
-
-CREATE TABLE ledger_entries (
-  id UUID PRIMARY KEY,
-  
-  -- Batch info
-  batch_id UUID NOT NULL,
-  batch_sequence BIGSERIAL,
-  
-  -- Transaction details
-  transaction_id VARCHAR(50) NOT NULL,
-  user_id UUID NOT NULL,
-  type VARCHAR(20) NOT NULL,        -- PURCHASE, DEPOSIT, etc.
-  amount NUMERIC(20,2) NOT NULL,
-  currency VARCHAR(20) NOT NULL,    -- GEM, PI_GCV, PI_EXCHANGE
-  
-  -- Counterparty
-  merchant_id UUID,
-  counterparty_wallet VARCHAR(255),
-  
-  -- Financial
-  gem_balance_before NUMERIC(20,2),
-  gem_balance_after NUMERIC(20,2),
-  platform_fee_gem NUMERIC(20,2),
-  
-  -- Status
-  status VARCHAR(20) NOT NULL,      -- SETTLED, FAILED, PENDING
-  validation_rules_passed TEXT[],   -- [RULE_001, RULE_002, ...]
-  risk_score NUMERIC(3,2),
-  
-  -- Integrity
-  hash_current TEXT NOT NULL,       -- SHA-256 of this record
-  hash_previous TEXT NOT NULL,      -- SHA-256 of previous record (chain)
-  signature TEXT NOT NULL,          -- HMAC for verification
-  
-  -- Encryption
-  encrypted_metadata TEXT,          -- Encrypted JSONB
-  
-  -- Timestamps
-  created_at TIMESTAMPTZ NOT NULL,
-  settled_at TIMESTAMPTZ,
-  
-  CONSTRAINT integrity_check CHECK (
-    gem_balance_after = gem_balance_before - amount - platform_fee_gem
-  )
-);
-
--- Immutability: Prevent modifications
-CREATE OR REPLACE FUNCTION prevent_ledger_modification()
-RETURNS TRIGGER AS $$
-BEGIN
-  RAISE EXCEPTION 'Ledger entries are immutable - cannot modify %', TG_OP;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER protect_ledger_update
-  BEFORE UPDATE ON ledger_entries
-  FOR EACH ROW EXECUTE FUNCTION prevent_ledger_modification();
-
-CREATE TRIGGER protect_ledger_delete
-  BEFORE DELETE ON ledger_entries
-  FOR EACH ROW EXECUTE FUNCTION prevent_ledger_modification();
-
--- Hash Chain Index
-CREATE INDEX idx_ledger_hash_chain ON ledger_entries(hash_previous, created_at);
-
--- Query optimization
-CREATE INDEX idx_ledger_user_date ON ledger_entries(user_id, created_at DESC);
-```
 
 ### Hash Chain Integrity
-
-
-
 ### Zero-Knowledge Proof Snapshot
 
 ```typescript
