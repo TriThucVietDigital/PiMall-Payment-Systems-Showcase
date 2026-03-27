@@ -1,4 +1,4 @@
-# SECURITY OVERVIEW — PiMall Institutional-Grade Protection
+# SECURITY OVERVIEW — *** Institutional-Grade Protection
 
 **Document Classification:** Public (Safe for investor/recruiter review)  
 **Last Updated:** March 26, 2026  
@@ -8,7 +8,7 @@
 
 ## EXECUTIVE SUMMARY
 
-PiMall implements **Binance-tier security architecture** across 5 layers:
+*** implements **Binance-tier security architecture** across 5 layers:
 
 - **Edge:** Cloudflare WAF + DDoS protection
 - **Transport:** TLS 1.3 encryption (all connections)
@@ -50,11 +50,6 @@ PiMall implements **Binance-tier security architecture** across 5 layers:
 
 ### Layer 3: Authentication (3-Factor Threshold)
 
-**Multi-Factor System:**
-1. **Factor A:** Device secret (iPad/phone unique identifier)
-2. **Factor B:** Wallet address (Pi Network binding)
-3. **Factor D:** Founder master key (central bank control)
-
 **Threshold Logic:** Any 2 of 3 factors = authenticated  
 **Why it works:** No single point of failure
 
@@ -75,18 +70,6 @@ PiMall implements **Binance-tier security architecture** across 5 layers:
 - Merchants see ONLY their own orders + customers
 - Admins see data based on role (mid-level/high-level/nuclear)
 - Enforcement at database level (not application layer)
-
-**Example Policy:**
-```
--- User can see only their wallet balance
-SELECT * FROM wallets WHERE user_id = current_user_id
-
--- Merchant can see only their store's orders
-SELECT * FROM orders WHERE store_id IN (
-  SELECT store_id FROM merchant_stores 
-  WHERE owner_user_id = current_user_id
-)
-```
 
 **Encryption at Rest (Optional):**
 - Sensitive fields encrypted with AES-256
@@ -116,11 +99,6 @@ SELECT * FROM orders WHERE store_id IN (
 
 ---
 
-## 2. GEM CURRENCY SECURITY (Strategic Overview)
-
-**Collateral Backing:** 70-100%  
-**Backing Assets:** VND, XRP, Pi GCV  
-
 ### Protections Against Devaluation:
 
 1. **Collateral Ratio Monitoring**
@@ -144,7 +122,7 @@ SELECT * FROM orders WHERE store_id IN (
 
 ## 3. PAYMENT FLOW SECURITY
 
-### PiMall → User Payment: 
+### *** → User Payment: 
 1. Merchant submits order (encrypted with session key)
 2. Firewall validates request (IP, rate limit, signature)
 3. RLS check: User owns wallet (database enforces)
@@ -155,7 +133,7 @@ SELECT * FROM orders WHERE store_id IN (
 **Total time:** 150-200ms (end-to-end)  
 **Failure modes:** Automatic rollback, no partial state
 
-### PiMall → External (XRP): 
+### *** → External (XRP): 
 1. Settlement batch created (aggregated orders)
 2. Multi-sig authority required (3-of-5 signers)
 3. XRP transaction broadcast (blockchain immutable)
