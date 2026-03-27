@@ -1,4 +1,4 @@
----
+
 # Enterprise-Grade 3-Layer Decoupled Ledger Architecture
 
 **High-Concurrency Financial Settlement System for Modern Payment Platforms**
