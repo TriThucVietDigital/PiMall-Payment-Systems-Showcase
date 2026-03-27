@@ -27,7 +27,7 @@ The platform aims to bridge traditional fiat-like e-commerce experience with rea
 |-------------------------------------------|-------------|
 | `3-LAYER-LEDGER-GUIDE.md`                | Detailed explanation of the 3-layer ledger architecture |
 |  'ARCHITECTURE_OVERVIEW.md'             | architecture overview |
-| `SCALING_ROADMAP_1500TPS'               | |STRATEGIC PILLARS FOR 1500+ TPS
+| `SCALING_ROADMAP_1500TPS'               | STRATEGIC PILLARS FOR 1500+ TPS |
 | `SECURITY_OVERVIEW.md`                   | Security architecture overview |
 
 
