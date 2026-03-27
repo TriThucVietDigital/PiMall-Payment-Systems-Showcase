@@ -95,7 +95,33 @@ This system is designed as an enterprise-grade digital payment platform capable 
 ---
 
 ## Deployment Architecture
-
+┌─────────────────────────────────────────────┐
+│          Cloudflare Global Network           │  <- DDoS protection, WAF
+└────────────┬────────────────────────────────┘
+             │ TLS 1.3
+┌────────────▼────────────────────────────────┐
+│       AWS ALB (Load Balancer)                │  <- Health checks, SSL termination
+└────────────┬────────────────────────────────┘
+             │
+     ┌───────┼───────┐
+     ▼       ▼       ▼
+  [API-1] [API-2] [API-3]                       <- Node.js + NestJS instances
+     │       │       │
+     └───────┼───────┘
+             │
+     ┌───────▼────────┐
+     │ PgBouncer      │                         <- Connection pooling
+     │ (100-200 conn) │
+     └───────┬────────┘
+             │
+    ┌────────┼──────────┐
+    ▼        ▼          ▼
+ [Primary] [Replica-1] [Replica-2]             <- PostgreSQL instances
+    │        │          │
+    │        └──────────┴──────────────┐
+    │                                   │
+    ▼ (WAL streaming replication)       ▼
+[S3 WAL Archive]              [Point-in-Time Recovery]
 -----
 ---
 
