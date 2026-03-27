@@ -1,11 +1,11 @@
-# PiMall 3-Layer Decoupled Ledger Architecture
+# 3-Layer Decoupled Ledger Architecture
 ## Technical Guide to High-Concurrency Financial Settlement System
 
 ---
 
 ## I. EXECUTIVE SUMMARY
 
-PiMall implements a **Decoupled 3-Layer Ledger** architecture inspired by modern banking infrastructure (RTGS, CHIPS, Fedwire) adapted for digital asset management. This design prioritizes **high concurrency** (30-50 TPS), **low latency** (20-30ms), and **financial integrity** through separation of concerns.
+implements a **Decoupled 3-Layer Ledger** architecture inspired by modern banking infrastructure (RTGS, CHIPS, Fedwire) adapted for digital asset management. This design prioritizes **high concurrency** (30-50 TPS), **low latency** (20-30ms), and **financial integrity** through separation of concerns.
 
 **Key Characteristics:**
 - **Transaction Layer:** Ultra-fast acceptance of concurrent transactions
