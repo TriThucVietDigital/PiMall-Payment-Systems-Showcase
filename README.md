@@ -1,9 +1,9 @@
-# PiMall - Global E-commerce & Internal Credit Ecosystem ( Review ) 
+#Global E-commerce & Internal Credit Ecosystem ( Review ) 
 
-**PiMall** is an **e-commerce marketplace combined with an internal credit system and Real World Asset (RWA) collateralization**, built for the Pi Network community and beyond.
+**** is an **e-commerce marketplace combined with an internal credit system and Real World Asset (RWA) collateralization**, built for the Pi Network community and beyond.
 
 ### Project Overview
-PiMall is a complete ecosystem that integrates:
+ we is a complete ecosystem that integrates:
 - **E-commerce Marketplace** for buying and selling physical goods
 - **Internal Credit Token - GEM** (pegged at 1 GEM = 1,000 VND)
 - **Real World Asset (RWA) Backing** – Agricultural products and physical commodities (rice, grapefruit, steel, etc.) used as collateral
