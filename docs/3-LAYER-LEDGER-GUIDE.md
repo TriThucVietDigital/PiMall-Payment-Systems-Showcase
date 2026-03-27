@@ -289,18 +289,6 @@ export function verifyZKSnapshot(snapshot: ZKSnapshot): boolean {
 - Fast: "Validating..." at 510ms
 - Final: "Settled" email at 30 sec (batch confirmation)
 
-### Throughput Comparison
-
-| System | TPS | Notes |
-|--------|-----|-------|
-| **PiMall (Design)** | 30-50 TPS | 3-layer decoupled |
-| **Bitcoin** | 7 TPS | Proof-of-Work bottleneck |
-| **Ethereum** | 15 TPS | PoS but complex validation |
-| **Stellar** | 1000+ TPS | Federated consensus |
-| **Visa** | 24,000 TPS | Centralized + batch |
-| **SWIFT** | 200 TPS | Bank-to-bank, ~4 hours |
-| **FedWire (US)** | 500 TPS | Real-time, retail limit |
-
 **PiMall Position:** Between blockchain systems (fast) and traditional banking (slower), optimized for **e-commerce** use case.
 
 ---
@@ -438,13 +426,7 @@ Every transaction has:
 
 ---
 
-## X. OPERATIONAL MONITORING
-
-`
-
----
-
-## XI. CONCLUSION
+## X .  CONCLUSION
 
 PiMall's **3-Layer Decoupled Ledger** represents a balanced approach between:
 - **Blockchain:** Immutability + transparency
@@ -459,18 +441,6 @@ By separating acceptance, validation, and storage, PiMall achieves:
 
 This makes PiMall suitable for **mission-critical financial systems** serving millions of users with institutional-grade security.
 
----
-
-## XII. REFERENCES
-
-1. Federal Reserve - Fedwire Funds Service: https://www.federalreserve.gov/paymentsystems/fedwire_about.htm
-2. CHIPS (Clearing House Interbank Payments System): https://www.theclearinghouse.org/
-3. SWIFT Standards: https://www.swift.com/standards
-4. ISO 20022: https://www.iso20022.org/
-5. PostgreSQL Security: https://www.postgresql.org/docs/current/sql-syntax.html
-6. Pedersen Commitments (Zero-Knowledge): https://en.wikipedia.org/wiki/Commitment_scheme
-
----
 
 **Document Version:** 1.0  
 **Last Updated:** 2026-03-26  
