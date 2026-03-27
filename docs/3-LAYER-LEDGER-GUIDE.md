@@ -68,33 +68,7 @@ Accept transaction requests from users/merchants with **minimal latency** and **
 | **Latency** | <5ms per acceptance | Sub-10ms user experience |
 | **Throughput** | 50,000+ req/sec | Burst capacity during sales/events |
 | **Error Rate** | <0.1% | Auto-retry on queue overflow |
-| **Queue Size** | 100,000 pending | 10-20 sec buffer at peak |
-
-### Data Flow
-
-```typescript
-interface TransactionLayerRequest {
-  userId: string                    // Pioneer wallet ID
-  type: 'PURCHASE' | 'DEPOSIT' | 'TRANSFER' | 'WITHDRAWAL'
-  amount: number                    // Amount in GEM
-  currency: 'GEM' | 'PI_GCV' | 'PI_EXCHANGE' | 'VND'
-  metadata: {
-    productId?: string              // For e-commerce
-    merchantId?: string             // Seller ID
-    paymentMethod: string           // GEM, Pi, VND
-  }
-  timestamp: number                 // Client-supplied
-  requestId: string                 // UUID for idempotency
-}
-
-interface TransactionLayerResponse {
-  transactionId: string             // APP-{timestamp}-{nonce}
-  status: 'ACCEPTED' | 'QUEUED'
-  provisionalBalance: number        // Gem balance after txn
-  estimatedSettlementTime: number   // ms until Layer 3
-  queuePosition: number
-}
-```
+| **Queue Size** | 100,000 pending | 10-20 sec buffer at 
 
 ### Processing Pipeline
 
@@ -123,48 +97,6 @@ interface TransactionLayerResponse {
 TOTAL: ~5ms end-to-end
 ```
 
-### Implementation
-
-```typescript
-// lib/ledger/transaction-layer.ts
-
-export async function acceptTransaction(
-  request: TransactionLayerRequest
-): Promise<TransactionLayerResponse> {
-  const startTime = Date.now()
-
-  // 1. Validate
-  validateTransactionRequest(request)
-
-  // 2. Idempotency
-  const cached = await redisClient.get(`txn:${request.requestId}`)
-  if (cached) return JSON.parse(cached)
-
-  // 3. Provisional update (in-memory)
-  const wallet = await walletCache.get(request.userId)
-  const provisionalBalance = wallet.balance - request.amount
-  
-  // 4. Enqueue
-  const transactionId = `APP-${Date.now()}-${randomId()}`
-  await redisQueue.lpush('transaction_queue', {
-    transactionId,
-    ...request,
-    acceptedAt: Date.now()
-  })
-
-  // 5. Cache response
-  const response = {
-    transactionId,
-    status: 'ACCEPTED',
-    provisionalBalance,
-    estimatedSettlementTime: 8000, // 8 sec to Layer 3
-    queuePosition: await redisQueue.llen('transaction_queue')
-  }
-  
-  await redisClient.setex(`txn:${request.requestId}`, 3600, JSON.stringify(response))
-  return response
-}
-```
 
 ---
 
@@ -184,112 +116,7 @@ Validate financial completeness, detect fraud, and prepare transactions for perm
 | **Fraud Detection** | ML-based | Velocity, amount, geolocation anomalies |
 | **Rejection Rate** | <2% | Legitimate txns rarely rejected |
 
-### Validation Rules
 
-```typescript
-enum ValidationRuleCategory {
-  FINANCIAL_INTEGRITY = 'financial',     // Balance, collateral
-  FRAUD_DETECTION = 'fraud',              // Velocity, patterns
-  COMPLIANCE = 'compliance',              // KYC, limits, sanctions
-  TECHNICAL = 'technical'                 // Formatting, signatures
-}
-
-const VALIDATION_RULES = {
-  // 1. Sufficient Balance
-  RULE_001: {
-    check: (txn, wallet) => wallet.balance >= txn.amount,
-    message: 'Insufficient balance',
-    severity: 'REJECT'
-  },
-
-  // 2. Max Single Transaction
-  RULE_002: {
-    check: (txn) => txn.amount <= 1_000_000, // 1M GEM max
-    message: 'Amount exceeds daily limit',
-    severity: 'REJECT'
-  },
-
-  // 3. Daily Transaction Velocity
-  RULE_003: {
-    check: (txn, wallet, user) => {
-      const daily = user.dailyVolume + txn.amount
-      return daily <= user.dailyLimit // Usually 10M GEM
-    },
-    message: 'Daily limit exceeded',
-    severity: 'REJECT'
-  },
-
-  // 4. Geolocation Anomaly
-  RULE_004: {
-    check: (txn, user) => {
-      const distance = geolocationDistance(
-        user.lastLocation,
-        txn.location
-      )
-      return distance < 1000 || user.isVIP // Allow > 1000km for VIP
-    },
-    message: 'Unusual location detected',
-    severity: 'CHALLENGE' // 2FA required
-  },
-
-  // 5. Known Sanctions List
-  RULE_005: {
-    check: (txn, wallet, user) => !sanctionsList.includes(user.id),
-    message: 'User on sanctions list',
-    severity: 'BLOCK'
-  },
-
-  // 6. Merchant Reputation
-  RULE_006: {
-    check: (txn) => {
-      const merchant = merchants.get(txn.metadata.merchantId)
-      return merchant.trustScore > 0.5 // >= 50% trust
-    },
-    message: 'Merchant trust score too low',
-    severity: 'CHALLENGE'
-  },
-
-  // 7. Collateral Type Validity
-  RULE_007: {
-    check: (txn) => {
-      return ['GEM', 'PI_GCV', 'PI_EXCHANGE', 'VND'].includes(txn.currency)
-    },
-    message: 'Invalid currency type',
-    severity: 'REJECT'
-  },
-
-  // 8. Platform Fee Gem Deduction
-  RULE_008: {
-    check: (txn, wallet) => {
-      const fee = calculateGemFee(txn.amount)
-      const userTotal = txn.amount + fee
-      const maxAllowed = wallet.balance + 100 // Max -100 GEM allowed
-      return userTotal <= maxAllowed
-    },
-    message: '1% platform fee exceeds limit',
-    severity: 'WARN' // Still process but flag
-  },
-
-  // 9. Idempotency UUID Uniqueness
-  RULE_009: {
-    check: (txn, ledger) => {
-      return !ledger.exists(txn.requestId)
-    },
-    message: 'Duplicate requestId detected',
-    severity: 'WARN' // Already processed
-  },
-
-  // 10. Timestamp Sanity
-  RULE_010: {
-    check: (txn) => {
-      const now = Date.now()
-      return Math.abs(now - txn.timestamp) < 300000 // 5 min max skew
-    },
-    message: 'Timestamp too old or in future',
-    severity: 'REJECT'
-  }
-}
-```
 
 ### Processing Pipeline
 
@@ -442,39 +269,7 @@ CREATE INDEX idx_ledger_user_date ON ledger_entries(user_id, created_at DESC);
 
 ### Hash Chain Integrity
 
-```typescript
-// Each record's hash is derived from its content + previous hash
-// Creates immutable chain: R1 → R2 → R3 → ... → Rn
 
-function generateLedgerHash(record: LedgerEntry): string {
-  const payload = JSON.stringify({
-    transactionId: record.transaction_id,
-    userId: record.user_id,
-    amount: record.amount,
-    status: record.status,
-    previousHash: record.hash_previous, // Includes previous record
-    timestamp: record.created_at
-  })
-  
-  return crypto
-    .createHash('sha256')
-    .update(payload)
-    .digest('hex')
-}
-
-// Verification (anyone can verify integrity)
-function verifyHashChain(entries: LedgerEntry[]): boolean {
-  for (let i = 0; i < entries.length - 1; i++) {
-    const currentHash = generateLedgerHash(entries[i])
-    const nextPrevHash = entries[i + 1].hash_previous
-    
-    if (currentHash !== nextPrevHash) {
-      return false // Chain broken - tampering detected
-    }
-  }
-  return true
-}
-```
 
 ### Zero-Knowledge Proof Snapshot
 
