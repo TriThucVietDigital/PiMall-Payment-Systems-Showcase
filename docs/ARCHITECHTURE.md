@@ -95,6 +95,7 @@ This system is designed as an enterprise-grade digital payment platform capable 
 ---
 
 ## Deployment Architecture
+production environment
 ┌─────────────────────────────────────────────┐
 │          Cloudflare Global Network           │  <- DDoS protection, WAF
 └────────────┬────────────────────────────────┘
@@ -121,8 +122,7 @@ This system is designed as an enterprise-grade digital payment platform capable 
     │        └──────────┴──────────────┐
     │                                   │
     ▼ (WAL streaming replication)       ▼
-[S3 WAL Archive]              [Point-in-Time Recovery]
------
+[S3 WAL Archive]              [Point-
 ---
 
 ## Monitoring & Observability
