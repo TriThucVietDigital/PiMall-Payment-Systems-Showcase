@@ -295,39 +295,6 @@ export function verifyZKSnapshot(snapshot: ZKSnapshot): boolean {
 }
 ```
 
-### Processing Pipeline
-
-```
-1. Collect Batch (1ms)
-   └─ Pop 1000 approved txns from Layer 2
-   └─ Group by merchant/settlement type
-
-2. Calculate Hashes (3ms)
-   └─ Generate SHA-256 for each entry
-   └─ Chain: previous_hash ← next_hash
-   └─ Verify no collisions
-
-3. Encrypt Sensitive Data (2ms)
-   └─ AES-256 for metadata JSONB
-   └─ Key from Vault (rotated weekly)
-
-4. Batch Insert (2ms)
-   └─ INSERT INTO ledger_entries (1000 rows)
-   └─ Transaction atomicity ensures all-or-nothing
-   └─ Index updates for query performance
-
-5. Generate Checksums (1ms)
-   └─ MD5(entire batch) for quick validation
-   └─ Store in batch_registry
-
-6. Archive (optional, async)
-   └─ Move old entries to cold storage (AWS Glacier)
-   └─ Maintain PITR (point-in-time recovery)
-
-TOTAL: ~10ms for 1000 txns (0.01ms per txn)
-```
-
----
 
 ## VI. PERFORMANCE BENCHMARKS
 
@@ -499,41 +466,7 @@ Every transaction has:
 
 ## X. OPERATIONAL MONITORING
 
-### Real-Time Dashboards
-
-```typescript
-interface LedgerMetrics {
-  layer1: {
-    acceptanceRate: number           // txns/sec
-    provisionalBalance: number       // total pending
-    queueLength: number
-    p95Latency: number              // 95th percentile
-  }
-  layer2: {
-    batchSize: number               // avg txns per batch
-    validationFailRate: number      // % rejected
-    fraudDetectionRate: number      // % flagged
-    avgRiskScore: number            // 0-1
-  }
-  layer3: {
-    writeLatency: number            // per batch
-    immutabilityStatus: string      // "OK" or trigger alerts
-    storageUsed: number             // GB
-    coldArchiveProgress: number     // %
-  }
-}
-
-// Alert thresholds
-if (metrics.layer1.queueLength > 50000) {
-  alert("HIGH: Transaction queue backing up")
-}
-if (metrics.layer2.validationFailRate > 0.05) {
-  alert("WARN: High rejection rate, possible fraud wave")
-}
-if (metrics.layer3.writeLatency > 50) {
-  alert("CRITICAL: Database write latency degraded")
-}
-```
+`
 
 ---
 
