@@ -26,18 +26,10 @@ The platform aims to bridge traditional fiat-like e-commerce experience with rea
 | File                                      | Description |
 |-------------------------------------------|-------------|
 | `3-LAYER-LEDGER-GUIDE.md`                | Detailed explanation of the 3-layer ledger architecture |
-| `STABLECOIN_LOGIC_EXPLANATION.md`        | Stablecoin logic and minting mechanism |
-| `ISO-20022-COMPLIANCE.md`                | ISO 20022 compliance details |
-| `ESCROW-AND-COLLATERAL.md`               | Escrow and RWA collateral mechanism |
-| `DATABASE_SCHEMA.md`                     | Database schema and Row-Level Security |
-| `PERFORMANCE-METRICS.md`                 | Performance metrics (latency & TPS) |
+|  'ARCHITECTURE_OVERVIEW.md'             | architecture overview |
+| `SCALING_ROADMAP_1500TPS'               | |STRATEGIC PILLARS FOR 1500+ TPS
 | `SECURITY_OVERVIEW.md`                   | Security architecture overview |
-| `BLOCKCHAIN-INTEGRATION.md`              | Blockchain integration plan |
 
-### Recommended Reading Order
-1. This README.md
-2. `3-LAYER-LEDGER-GUIDE.md` and `STABLECOIN_LOGIC_EXPLANATION.md`
-3. `ISO-20022-COMPLIANCE.md`, `ESCROW-AND-COLLATERAL.md`, and `BLOCKCHAIN-INTEGRATION.md`
 
 **Note**: This repository contains **only technical documentation and system descriptions**. It does **not** include any production source code.
 
@@ -45,6 +37,5 @@ The platform aims to bridge traditional fiat-like e-commerce experience with rea
 
 Built by **Le Tuan Khanh**  
 Open to technical discussions or deep-dive sessions as part of the application process.
-**Le Tuan Khanh**  
 Email: khanhle.fintech@gmail.com  
 Thank you for your time and consideration!
