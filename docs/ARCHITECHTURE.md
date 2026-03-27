@@ -95,3 +95,45 @@ This system is designed as an enterprise-grade digital payment platform capable 
 ---
 
 ## Deployment Architecture
+
+-----
+---
+
+## Monitoring & Observability
+
+- **Metrics:** Prometheus + Grafana  
+- **Tracing:** OpenTelemetry (distributed)  
+- **Logging:** Structured JSON to CloudWatch  
+- **Alerting:** PagerDuty for critical thresholds  
+- Key alerts: response time p95, connection pool usage, transaction failure rate, reconciliation mismatches
+
+---
+
+## Compliance & Resilience
+
+- Support for KYC/AML, GDPR/CCPA (data export & soft-delete)  
+- Double-entry style accounting readiness  
+- Disaster Recovery:  
+  - Single server failure → <5 min RTO  
+  - Region failure → <1 hour RTO  
+  - Data corruption → Point-in-Time Recovery  
+
+---
+
+## Conclusion
+
+This architecture delivers a secure, scalable, and highly reliable payment processing platform suitable for high-volume fintech environments. It combines modern edge protection, microservices, robust database security (RLS), and enterprise observability to guarantee data integrity, performance, and compliance at scale.
+
+**Key Achievements:**
+- Strict user data isolation (RLS)  
+- Immutable financial records  
+- Sub-50ms global latency  
+- Horizontal scalability to millions of users  
+
+---
+
+**Document Version:** 1.0  
+**Authored by:** Khanh – Senior Backend Engineer  
+**Purpose:** Portfolio & Technical Showcase
+- 
+
