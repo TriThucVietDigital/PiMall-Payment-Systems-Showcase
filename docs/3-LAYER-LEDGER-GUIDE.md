@@ -37,7 +37,7 @@ implements a **Decoupled 3-Layer Ledger** architecture inspired by modern bankin
 │  • Financial completeness verification                 │
 │  • Fraud detection & risk assessment                   │
 │  • Ledger reconciliation logic                         │
-│  • Collateral validation (Gem, Pi, VND)                │
+│  • Collateral validation ( fiat, token)               │
 │  • Target: <15ms per batch (100 txns)                  │
 └────────────────┬─────────────────────────────────────┘
                  │ [Batch every 1000 txns or 10sec]
@@ -172,27 +172,7 @@ Permanently record validated transactions with **cryptographic integrity** and *
 ### Hash Chain Integrity
 ### Zero-Knowledge Proof Snapshot
 
-```typescript
-// Periodically (daily/weekly) create ZK snapshot of entire ledger
-// Proof: "Total GEM outstanding = X" without revealing individual balances
-
-interface ZKSnapshot {
-  snapshotId: string
-  periodEnd: Date
-  totalGemBalances: Pedersen.Commitment     // Encrypted sum
-  totalGemFeesPending: Pedersen.Commitment  // Encrypted sum
-  proofOfSum: ZKProof                       // Zero-knowledge proof
-  witness: (sealed to auditors only)        // Random salt
-}
-
-// Verification: Anyone can verify total without seeing individual data
-export function verifyZKSnapshot(snapshot: ZKSnapshot): boolean {
-  return Pedersen.verify(
-    snapshot.totalGemBalances,
-    snapshot.proofOfSum
-  )
-}
-```
+``
 
 
 ## VI. PERFORMANCE BENCHMARKS
@@ -214,7 +194,7 @@ export function verifyZKSnapshot(snapshot: ZKSnapshot): boolean {
 - Fast: "Validating..." at 510ms
 - Final: "Settled" email at 30 sec (batch confirmation)
 
-**PiMall Position:** Between blockchain systems (fast) and traditional banking (slower), optimized for **e-commerce** use case.
+**Mall Position:** Between blockchain systems (fast) and traditional banking (slower), optimized for **e-commerce** use case.
 
 ---
 
@@ -292,7 +272,7 @@ Layer 3 (Storage): 10ms immutable write
 
 ### vs. Blockchain (Bitcoin, Ethereum)
 
-| Aspect | PiMall | Blockchain |
+| Aspect | Mall | Blockchain |
 |--------|--------|-----------|
 | **Finality** | ~500ms (Layer 3 commit) | 10-60 min (confirmation blocks) |
 | **Throughput** | 30-50 TPS | 7-15 TPS |
@@ -307,7 +287,7 @@ Layer 3 (Storage): 10ms immutable write
 
 ### vs. Modern FinTech (Square, Stripe)
 
-| Aspect | PiMall | FinTech |
+| Aspect | Mall | FinTech |
 |--------|--------|--------|
 | **Settlement** | <1 sec | 1-3 days |
 | **International** | Native multi-currency | Requires intermediaries |
@@ -353,7 +333,7 @@ Every transaction has:
 
 ## X .  CONCLUSION
 
-PiMall's **3-Layer Decoupled Ledger** represents a balanced approach between:
+Mall's **3-Layer Decoupled Ledger** represents a balanced approach between:
 - **Blockchain:** Immutability + transparency
 - **Traditional Banking:** Trust + regulation + fraud prevention
 - **Modern FinTech:** Speed + user experience
@@ -368,6 +348,6 @@ This makes PiMall suitable for **mission-critical financial systems** serving mi
 
 
 **Document Version:** 1.0  
-**Last Updated:** 2026-03-26  
-**Author:** PiMall Engineering  
+**Last Updated:** 2026
+**Author:**  LÊ TUẤN KHANH
 **Status:** Technical Reference (Confidential)
